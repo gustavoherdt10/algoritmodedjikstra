@@ -1,4 +1,3 @@
-// Grafo de representação das cidades e os valores de custo das rodovias
 const graph = {
     'Ituporanga': { 'Aurora': 26, 'Atalanta': 33, 'Petrolandia': 18, 'Chapadao do Lageado': 26, 'Imbuia': 50, 'Vidal Ramos': 62 },
     'Aurora': { 'Rio do Sul': 26, 'Ituporanga': 26, 'Atalanta': 59.4 },
@@ -34,7 +33,6 @@ function dijkstra(graph, start, end) {
     queue.push([start, 0]);
 
     while (queue.length > 0) {
-        // Ordenando a fila de prioridades pela menor distância
         queue.sort((a, b) => a[1] - b[1]);
         const [currentCity] = queue.shift();
 
@@ -43,7 +41,6 @@ function dijkstra(graph, start, end) {
         if (!visited[currentCity]) {
             visited[currentCity] = true;
 
-            // Atualizando as distâncias para os vizinhos
             for (let neighbor in graph[currentCity]) {
                 let distance = distances[currentCity] + graph[currentCity][neighbor];
 
@@ -56,7 +53,6 @@ function dijkstra(graph, start, end) {
         }
     }
 
-    // Reconstruindo o caminho
     const path = [];
     let current = end;
     while (current !== null) {
@@ -67,9 +63,21 @@ function dijkstra(graph, start, end) {
     return { path, distance: distances[end] };
 }
 
-// Exemplo de uso
-const startCity = 'Ituporanga';
-const endCity = 'Ibirama';
-const result = dijkstra(graph, startCity, endCity);
-console.log(`Menor custo de ${startCity} para ${endCity}: ${result.distance}`);
-console.log('Caminho: ', result.path.join(' -> '));
+document.getElementById('calculateBtn').addEventListener('click', function () {
+    const startCity = document.getElementById('startCity').value;
+    const endCity = document.getElementById('endCity').value;
+
+    // Executando o algoritmo de Dijkstra
+    const result = dijkstra(graph, startCity, endCity);
+
+    // Exibindo o caminho e o custo total
+    const output = document.getElementById('output');
+    if (result.distance === Infinity) {
+        output.textContent = `Não há caminho entre ${startCity} e ${endCity}.`;
+    } else {
+        output.innerHTML = `
+            <strong>Caminho percorrido:</strong> ${result.path.join(' -> ')}<br>
+            <strong>Custo total:</strong> ${result.distance} unidades.
+        `;
+    }
+});
