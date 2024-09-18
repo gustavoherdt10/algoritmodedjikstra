@@ -16,13 +16,13 @@ const graph = {
     'Laurentino': { 'Rio do Sul': 39, 'Trombudo Central': 57, 'Presidente Getulio': 114 }
 };
 
-// Algoritmo de Dijkstra
 function dijkstra(graph, start, end) {
     const distances = {};
     const visited = {};
     const previous = {};
     const queue = [];
 
+    // Inicializando as distâncias
     for (let city in graph) {
         distances[city] = Infinity;
         previous[city] = null;
@@ -63,48 +63,14 @@ function dijkstra(graph, start, end) {
     return { path, distance: distances[end] };
 }
 
-// Função para desenhar o grafo usando Vis.js
-function drawGraph(graph, path) {
-    const nodes = [];
-    const edges = [];
-
-    // Criando os nós
-    for (let city in graph) {
-        nodes.push({ id: city, label: city });
-    }
-
-    // Criando as arestas
-    for (let city in graph) {
-        for (let neighbor in graph[city]) {
-            const isPathEdge = path.includes(city) && path.includes(neighbor) && 
-                               Math.abs(path.indexOf(city) - path.indexOf(neighbor)) === 1;
-            edges.push({
-                from: city,
-                to: neighbor,
-                label: graph[city][neighbor].toString(),
-                color: isPathEdge ? 'red' : 'gray', // Destacar arestas no caminho
-                width: isPathEdge ? 3 : 1
-            });
-        }
-    }
-
-    const container = document.getElementById('graph-container');
-    const data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
-    const options = { 
-        nodes: { shape: 'circle', font: { size: 14 } },
-        edges: { font: { align: 'top' }, arrows: 'to' },
-        physics: false // Desativando a física para um layout mais estático
-    };
-    new vis.Network(container, data, options);
-}
-
-// Evento de clique no botão de calcular
 document.getElementById('calculateBtn').addEventListener('click', function () {
     const startCity = document.getElementById('startCity').value;
     const endCity = document.getElementById('endCity').value;
 
+    // Executando o algoritmo de Dijkstra
     const result = dijkstra(graph, startCity, endCity);
 
+    // Exibindo o caminho e o custo total
     const output = document.getElementById('output');
     if (result.distance === Infinity) {
         output.textContent = `Não há caminho entre ${startCity} e ${endCity}.`;
@@ -113,6 +79,5 @@ document.getElementById('calculateBtn').addEventListener('click', function () {
             <strong>Caminho percorrido:</strong> ${result.path.join(' -> ')}<br>
             <strong>Custo total:</strong> ${result.distance} unidades.
         `;
-        drawGraph(graph, result.path); // Desenhar o grafo e destacar o caminho
     }
 });
