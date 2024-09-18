@@ -67,10 +67,8 @@ document.getElementById('calculateBtn').addEventListener('click', function () {
     const startCity = document.getElementById('startCity').value;
     const endCity = document.getElementById('endCity').value;
 
-    // Executando o algoritmo de Dijkstra
     const result = dijkstra(graph, startCity, endCity);
 
-    // Exibindo o caminho e o custo total
     const output = document.getElementById('output');
     if (result.distance === Infinity) {
         output.textContent = `Não há caminho entre ${startCity} e ${endCity}.`;
@@ -81,3 +79,78 @@ document.getElementById('calculateBtn').addEventListener('click', function () {
         `;
     }
 });
+
+const cityCoordinates = {
+    'Ituporanga': { x: 100, y: 300 },
+    'Aurora': { x: 200, y: 250 },
+    'Rio do Sul': { x: 300, y: 200 },
+    'Agronomica': { x: 400, y: 150 },
+    'Trombudo Central': { x: 500, y: 250 },
+    'Agrolandia': { x: 600, y: 350 },
+    'Atalanta': { x: 150, y: 350 },
+    'Petrolandia': { x: 100, y: 150 },
+    'Chapadao do Lageado': { x: 50, y: 100 },
+    'Imbuia': { x: 150, y: 100 },
+    'Vidal Ramos': { x: 250, y: 50 },
+    'Lontras': { x: 350, y: 100 },
+    'Ibirama': { x: 450, y: 50 },
+    'Presidente Getulio': { x: 550, y: 150 },
+    'Laurentino': { x: 500, y: 200 }
+};
+
+// Função para desenhar o caminho no canvas
+function drawPathOnCanvas(path) {
+    const canvas = document.getElementById('pathCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Limpa o canvas antes de desenhar um novo caminho
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = 'black';
+    ctx.font = '16px Arial';
+
+    // Desenha as cidades como círculos e seus nomes
+    path.forEach((city, index) => {
+        const { x, y } = cityCoordinates[city];
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, 2 * Math.PI);  // Desenha um círculo para cada cidade
+        ctx.fillStyle = '#e21919';  // Cidades em vermelho
+        ctx.fill();
+        ctx.fillStyle = 'black';  // Texto em preto
+        ctx.fillText(city, x - 30, y - 15);  // Nome da cidade ao lado do círculo
+        ctx.closePath();
+
+        // Desenha a linha de conexão entre as cidades
+        if (index > 0) {
+            const prevCity = cityCoordinates[path[index - 1]];
+            ctx.beginPath();
+            ctx.moveTo(prevCity.x, prevCity.y);
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = '#0000FF';  // Linhas azuis
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.closePath();
+        }
+    });
+}
+
+document.getElementById('calculateBtn').addEventListener('click', function () {
+    const startCity = document.getElementById('startCity').value;
+    const endCity = document.getElementById('endCity').value;
+
+    const result = dijkstra(graph, startCity, endCity);
+
+    const output = document.getElementById('output');
+    if (result.distance === Infinity) {
+        output.textContent = `Não há caminho entre ${startCity} e ${endCity}.`;
+    } else {
+        output.innerHTML = `
+            <strong>Caminho percorrido:</strong> ${result.path.join(' -> ')}<br>
+            <strong>Custo total:</strong> ${result.distance} unidades.
+        `;
+
+        // Desenha o caminho no canvas
+        drawPathOnCanvas(result.path);
+    }
+});
+
