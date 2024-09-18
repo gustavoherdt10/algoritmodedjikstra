@@ -79,14 +79,4 @@ button:hover {
     margin: 0 auto;
 }
 
-.visualization-container {
-    margin-top: 30px;
-    text-align: center;
-}
-
-#pathCanvas {
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-}
-
 

@@ -77,80 +77,64 @@ document.getElementById('calculateBtn').addEventListener('click', function () {
             <strong>Caminho percorrido:</strong> ${result.path.join(' -> ')}<br>
             <strong>Custo total:</strong> ${result.distance} unidades.
         `;
+
+        // Desenha o grafo com o Sigma.js
+        drawGraphWithSigma(graph, result.path);
     }
 });
 
-const cityCoordinates = {
-    'Ituporanga': { x: 100, y: 300 },
-    'Aurora': { x: 200, y: 250 },
-    'Rio do Sul': { x: 300, y: 200 },
-    'Agronomica': { x: 400, y: 150 },
-    'Trombudo Central': { x: 500, y: 250 },
-    'Agrolandia': { x: 600, y: 350 },
-    'Atalanta': { x: 150, y: 350 },
-    'Petrolandia': { x: 100, y: 150 },
-    'Chapadao do Lageado': { x: 50, y: 100 },
-    'Imbuia': { x: 150, y: 100 },
-    'Vidal Ramos': { x: 250, y: 50 },
-    'Lontras': { x: 350, y: 100 },
-    'Ibirama': { x: 450, y: 50 },
-    'Presidente Getulio': { x: 550, y: 150 },
-    'Laurentino': { x: 500, y: 200 }
-};
+// Função para desenhar o grafo usando Sigma.js
+function drawGraphWithSigma(graph, path) {
+    // Container onde o grafo será desenhado
+    const container = document.getElementById('graph-container');
+    container.innerHTML = ''; // Limpa o conteúdo anterior
 
-// Função para desenhar o caminho no canvas
-function drawPathOnCanvas(path) {
-    const canvas = document.getElementById('pathCanvas');
-    const ctx = canvas.getContext('2d');
+    const sigmaGraph = {
+        nodes: [],
+        edges: []
+    };
 
-    // Limpa o canvas antes de desenhar um novo caminho
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Adiciona os nós e arestas ao grafo Sigma.js
+    let nodeCount = 0;
+    const nodePositions = {};
 
-    ctx.fillStyle = 'black';
-    ctx.font = '16px Arial';
+    // Adicionando nós (cidades)
+    for (const city in graph) {
+        nodeCount++;
+        const x = Math.random(); // Coordenada X (pode ser ajustado conforme necessário)
+        const y = Math.random(); // Coordenada Y (pode ser ajustado conforme necessário)
+        sigmaGraph.nodes.push({
+            id: city,
+            label: city,
+            x: x,
+            y: y,
+            size: 1,
+            color: path.includes(city) ? '#ff0000' : '#00f' // Destaca as cidades no caminho em vermelho
+        });
+        nodePositions[city] = { x, y };
+    }
 
-    // Desenha as cidades como círculos e seus nomes
-    path.forEach((city, index) => {
-        const { x, y } = cityCoordinates[city];
-        ctx.beginPath();
-        ctx.arc(x, y, 10, 0, 2 * Math.PI);  // Desenha um círculo para cada cidade
-        ctx.fillStyle = '#e21919';  // Cidades em vermelho
-        ctx.fill();
-        ctx.fillStyle = 'black';  // Texto em preto
-        ctx.fillText(city, x - 30, y - 15);  // Nome da cidade ao lado do círculo
-        ctx.closePath();
+    // Adicionando arestas (conexões entre cidades)
+    for (const city in graph) {
+        for (const neighbor in graph[city]) {
+            sigmaGraph.edges.push({
+                id: `edge-${city}-${neighbor}`,
+                source: city,
+                target: neighbor,
+                size: 1,
+                color: path.includes(city) && path.includes(neighbor) ? '#ff0000' : '#ccc'
+            });
+        }
+    }
 
-        // Desenha a linha de conexão entre as cidades
-        if (index > 0) {
-            const prevCity = cityCoordinates[path[index - 1]];
-            ctx.beginPath();
-            ctx.moveTo(prevCity.x, prevCity.y);
-            ctx.lineTo(x, y);
-            ctx.strokeStyle = '#0000FF';  // Linhas azuis
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.closePath();
+    // Inicializa o Sigma.js com o grafo gerado
+    const s = new sigma({
+        graph: sigmaGraph,
+        container: container,
+        settings: {
+            defaultNodeColor: '#ec5148',
+            edgeColor: 'default',
+            defaultEdgeColor: '#d3d3d3'
         }
     });
 }
-
-document.getElementById('calculateBtn').addEventListener('click', function () {
-    const startCity = document.getElementById('startCity').value;
-    const endCity = document.getElementById('endCity').value;
-
-    const result = dijkstra(graph, startCity, endCity);
-
-    const output = document.getElementById('output');
-    if (result.distance === Infinity) {
-        output.textContent = `Não há caminho entre ${startCity} e ${endCity}.`;
-    } else {
-        output.innerHTML = `
-            <strong>Caminho percorrido:</strong> ${result.path.join(' -> ')}<br>
-            <strong>Custo total:</strong> ${result.distance} unidades.
-        `;
-
-        // Desenha o caminho no canvas
-        drawPathOnCanvas(result.path);
-    }
-});
-
