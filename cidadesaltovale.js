@@ -71,70 +71,11 @@ document.getElementById('calculateBtn').addEventListener('click', function () {
 
     const output = document.getElementById('output');
     if (result.distance === Infinity) {
-        output.textContent = `Não há caminho entre ${startCity} e ${endCity}.`;
+        output.textContent = Não há caminho entre ${startCity} e ${endCity}.;
     } else {
-        output.innerHTML = `
+        output.innerHTML = 
             <strong>Caminho percorrido:</strong> ${result.path.join(' -> ')}<br>
             <strong>Custo total:</strong> ${result.distance} unidades.
-        `;
-
-        // Desenha o grafo com o Sigma.js
-        drawGraphWithSigma(graph, result.path);
+        ;
     }
 });
-
-// Função para desenhar o grafo usando Sigma.js
-function drawGraphWithSigma(graph, path) {
-    // Container onde o grafo será desenhado
-    const container = document.getElementById('graph-container');
-    container.innerHTML = ''; // Limpa o conteúdo anterior
-
-    const sigmaGraph = {
-        nodes: [],
-        edges: []
-    };
-
-    // Adiciona os nós e arestas ao grafo Sigma.js
-    let nodeCount = 0;
-    const nodePositions = {};
-
-    // Adicionando nós (cidades)
-    for (const city in graph) {
-        nodeCount++;
-        const x = Math.random(); // Coordenada X (pode ser ajustado conforme necessário)
-        const y = Math.random(); // Coordenada Y (pode ser ajustado conforme necessário)
-        sigmaGraph.nodes.push({
-            id: city,
-            label: city,
-            x: x,
-            y: y,
-            size: 1,
-            color: path.includes(city) ? '#ff0000' : '#00f' // Destaca as cidades no caminho em vermelho
-        });
-        nodePositions[city] = { x, y };
-    }
-
-    // Adicionando arestas (conexões entre cidades)
-    for (const city in graph) {
-        for (const neighbor in graph[city]) {
-            sigmaGraph.edges.push({
-                id: `edge-${city}-${neighbor}`,
-                source: city,
-                target: neighbor,
-                size: 1,
-                color: path.includes(city) && path.includes(neighbor) ? '#ff0000' : '#ccc'
-            });
-        }
-    }
-
-    // Inicializa o Sigma.js com o grafo gerado
-    const s = new sigma({
-        graph: sigmaGraph,
-        container: container,
-        settings: {
-            defaultNodeColor: '#ec5148',
-            edgeColor: 'default',
-            defaultEdgeColor: '#d3d3d3'
-        }
-    });
-}
