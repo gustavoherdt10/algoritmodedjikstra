@@ -1,11 +1,72 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exemplo utilizando o VIS.JS</title>
+    <title>Menor Custo de Viagem - Dijkstra</title>
+    <link rel="stylesheet" href="exvisjs.css">
+    <!-- Inclua o Vis.js via CDN -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Algoritmo de Dijkstra - Menor Custo entre Cidades</h1>
+
+        <div class="form-group">
+            <label for="startCity">Cidade de Partida:</label>
+            <select id="startCity">
+                <!-- Cidades aqui -->
+                <option value="Ituporanga">Ituporanga</option>
+                <option value="Aurora">Aurora</option>
+                <option value="Rio do Sul">Rio do Sul</option>
+                <option value="Agronomica">Agronômica</option>
+                <option value="Trombudo Central">Trombudo Central</option>
+                <option value="Agrolandia">Agrolândia</option>
+                <option value="Atalanta">Atalanta</option>
+                <option value="Petrolandia">Petrolândia</option>
+                <option value="Chapadao do Lageado">Chapadão do Lageado</option>
+                <option value="Imbuia">Imbuia</option>
+                <option value="Vidal Ramos">Vidal Ramos</option>
+                <option value="Lontras">Lontras</option>
+                <option value="Ibirama">Ibirama</option>
+                <option value="Presidente Getulio">Presidente Getúlio</option>
+                <option value="Laurentino">Laurentino</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="endCity">Cidade de Destino:</label>
+            <select id="endCity">
+                <!-- Cidades aqui -->
+                <option value="Ituporanga">Ituporanga</option>
+                <option value="Aurora">Aurora</option>
+                <option value="Rio do Sul">Rio do Sul</option>
+                <option value="Agronomica">Agronômica</option>
+                <option value="Trombudo Central">Trombudo Central</option>
+                <option value="Agrolandia">Agrolândia</option>
+                <option value="Atalanta">Atalanta</option>
+                <option value="Petrolandia">Petrolândia</option>
+                <option value="Chapadao do Lageado">Chapadão do Lageado</option>
+                <option value="Imbuia">Imbuia</option>
+                <option value="Vidal Ramos">Vidal Ramos</option>
+                <option value="Lontras">Lontras</option>
+                <option value="Ibirama">Ibirama</option>
+                <option value="Presidente Getulio">Presidente Getúlio</option>
+                <option value="Laurentino">Laurentino</option>
+            </select>
+        </div>
+
+        <button id="calculateBtn">Calcular Menor Custo</button>
+
+        <div class="result">
+            <h2>Resultado:</h2>
+            <p id="output"></p>
+        </div>
+
+        <!-- Novo div para o grafo -->
+        <div id="network" style="width: 100%; height: 500px; border: 1px solid lightgray;"></div>
+    </div>
+
+    <script src="exvisjs.js"></script>
 </body>
 </html>
