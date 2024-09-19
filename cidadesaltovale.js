@@ -22,7 +22,6 @@ function dijkstra(graph, start, end) {
     const previous = {};
     const queue = [];
 
-    // Inicializando as distâncias
     for (let city in graph) {
         distances[city] = Infinity;
         previous[city] = null;
@@ -67,10 +66,8 @@ document.getElementById('calculateBtn').addEventListener('click', function () {
     const startCity = document.getElementById('startCity').value;
     const endCity = document.getElementById('endCity').value;
 
-    // Executando o algoritmo de Dijkstra
     const result = dijkstra(graph, startCity, endCity);
 
-    // Exibindo o caminho e o custo total
     const output = document.getElementById('output');
     if (result.distance === Infinity) {
         output.textContent = `Não há caminho entre ${startCity} e ${endCity}.`;
