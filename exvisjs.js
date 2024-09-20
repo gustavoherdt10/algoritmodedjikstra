@@ -1,3 +1,4 @@
+//Definição do Grafo produzido em sala de aula
 const graph = {
     'Ituporanga': { 'Aurora': 26, 'Atalanta': 33, 'Petrolandia': 18, 'Chapadao do Lageado': 26, 'Imbuia': 50, 'Vidal Ramos': 62 },
     'Aurora': { 'Rio do Sul': 26, 'Ituporanga': 26, 'Atalanta': 59.4 },
@@ -14,15 +15,15 @@ const graph = {
     'Ibirama': { 'Rio do Sul': 81, 'Vidal Ramos': 299.2, 'Lontras': 51, 'Presidente Getulio': 36 },
     'Presidente Getulio': { 'Agronomica': 108, 'Lontras': 58, 'Ibirama': 36, 'Laurentino': 114 },
     'Laurentino': { 'Rio do Sul': 39, 'Trombudo Central': 57, 'Presidente Getulio': 114 }
-    // Grafo completo aqui
 };
 
 // Função para desenhar o grafo com Vis.js
 function drawGraph(result) {
-    // Cria os nós (cidades)
+
+    //Nós
     const nodes = Object.keys(graph).map(city => ({ id: city, label: city }));
 
-    // Cria as arestas (estradas com custos)
+    //Arestas
     const edges = [];
     for (let city in graph) {
         for (let neighbor in graph[city]) {
@@ -51,7 +52,7 @@ function dijkstra(graph, start, end) {
     const previous = {};
     const queue = [];
 
-    // Inicializando as distâncias
+    
     for (let city in graph) {
         distances[city] = Infinity;
         previous[city] = null;
@@ -96,10 +97,10 @@ document.getElementById('calculateBtn').addEventListener('click', function () {
     const startCity = document.getElementById('startCity').value;
     const endCity = document.getElementById('endCity').value;
 
-    // Executando o algoritmo de Dijkstra
+
     const result = dijkstra(graph, startCity, endCity);
 
-    // Exibindo o caminho e o custo total
+
     const output = document.getElementById('output');
     if (result.distance === Infinity) {
         output.textContent = `Não há caminho entre ${startCity} e ${endCity}.`;
