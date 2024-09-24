@@ -81,7 +81,6 @@ button:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsividade para telas menores */
 @media (max-width: 600px) {
     body {
         flex-direction: column;
@@ -95,7 +94,7 @@ button:hover {
     }
 
     #network {
-        height: 300px; /* Reduz a altura do grafo em telas menores */
+        height: 300px;
     }
 
     h1 {

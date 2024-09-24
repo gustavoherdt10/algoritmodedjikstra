@@ -109,7 +109,7 @@ document.getElementById('calculateBtn').addEventListener('click', function () {
             <strong>Custo total:</strong> ${result.distance} unidades.
         `;
 
-        // Desenhando o grafo e destacando o caminho
+        // Resultado desenhando o grafo e destacando o caminho
         drawGraph(result);
     }
 });
