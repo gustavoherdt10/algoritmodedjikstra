@@ -52,7 +52,6 @@ function dijkstra(graph, start, end) {
     const previous = {};
     const queue = [];
 
-    
     for (let city in graph) {
         distances[city] = Infinity;
         previous[city] = null;

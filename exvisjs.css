@@ -71,8 +71,7 @@ button:hover {
     font-weight: bold;
 }
 
-/* Estilo do Grafo produzido pelo Vis.js;
-As cores das arestas do grafo são definidas pelo próprio Vis.js*/
+/* Estilo do Grafo produzido pelo Vis.js */
 #network {
     margin-top: 20px;
     width: 100%;
@@ -80,4 +79,35 @@ As cores das arestas do grafo são definidas pelo próprio Vis.js*/
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 600px) {
+    body {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .container {
+        width: 100%;
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    #network {
+        height: 300px; /* Reduz a altura do grafo em telas menores */
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    button {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    select, #output {
+        font-size: 14px;
+    }
 }
